@@ -1,0 +1,17 @@
+steps:    
+- name: 'gcr.io/kaniko-project/executor:latest'
+  id: Generating dockerimage'
+  args:
+  - --destination=gcr.io/$PROJECT_ID/faceguard-frontend-$BRANCH_NAME:$BUILD_ID
+  - --cache=true
+  - --cache-ttl=120h  
+  - --dockerfile=./faceguard/frontend/Dockerfile
+  - --context=./faceguard/frontend/.
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: 
+  - app
+  - deploy 
+  - -v=1
+  - --image-url=gcr.io/$PROJECT_ID/faceguard-frontend-$BRANCH_NAME:$BUILD_ID
+  dir: './faceguard/frontend'
+timeout: '1600s' 

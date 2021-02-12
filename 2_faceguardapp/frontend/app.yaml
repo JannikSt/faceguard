@@ -1,0 +1,31 @@
+runtime: custom
+env: flex
+service: faceguard-frontend
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 15
+  cool_down_period_sec: 180
+  cpu_utilization:
+    target_utilization: 0.6
+  target_concurrent_requests: 100
+resources:
+  cpu: 1
+  memory_gb: .5
+  disk_size_gb: .5
+env_variables:
+  NODE_ENV: 'production'
+  UMI_UI: 'none'
+  REACT_APP_ENV: 'test'
+liveness_check:
+  path: "/health"
+  check_interval_sec: 30
+  timeout_sec: 4
+  failure_threshold: 10
+  success_threshold: 4
+readiness_check:
+  path: "/health"
+  check_interval_sec: 10
+  timeout_sec: 4
+  failure_threshold: 10
+  success_threshold: 4
+  app_start_timeout_sec: 240
